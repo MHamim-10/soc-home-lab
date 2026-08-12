@@ -1,4 +1,4 @@
-# Attack N: <Attack Name>
+# Attack N: RDP brute-force attack
 
 ## Objective
 
@@ -18,7 +18,7 @@ The objective of this attack is to demonstrate how repeated failed RDP authentic
 A password dictionary named password.txt was used as the wordlist for the brute-force attempt.
 The target account was: jsmith
 
-2. Launch the RDP Brute-Force Attack
+2. Launch the RDP Brute-Force Attack:
 
 From the Kali Linux attacker machine (192.168.10.100), Hydra was used to attempt authentication against the Windows 11 RDP service.
 ```
@@ -30,7 +30,7 @@ Where:
 rdp://192.168.10.11 specifies the RDP service and target
 
 ```
-3. Successful Authentication
+3. Successful Authentication:
 
 The attack eventually discovered the correct password for the jsmith account: Apple123
 The successful password allowed authentication to the Windows 11 target through RDP.
@@ -41,13 +41,13 @@ Lab note: The password above was intentionally created for this isolated SOC lab
 
 The attack was investigated using Splunk by searching the Windows authentication events received from the endpoint.
 
-1. Search for the Target User
+1. Search for the Target User:
 
 The initial Splunk search was:  "index=endpoint jsmith" 
 This search was used to identify authentication-related events associated with the jsmith account.
 The results showed multiple events associated with the account, which provided the starting point for investigating the suspected brute-force activity.
 
-2. Identify Failed Logon Attempts
+2. Identify Failed Logon Attempts:
 
 The investigation was narrowed to Windows failed authentication events using Event ID 4625.
 Splunk search was: "index=endpoint jsmith EventCode=4625"
@@ -57,14 +57,9 @@ This behavior was considered suspicious because a large number of failed authent
 
 Key fields reviewed during the investigation included:
 
-Account_Name
-EventCode
-Source_Network_Address
-Computer_Name
-Logon_Type
-Timestamp
+Account_Name, EventCode, Source_Network_Address, Computer_Name, Logon_Type, Timestamp
 
-3. Identify the Source of the Attack
+3. Identify the Source of the Attack:
 
 To determine whether the failed attempts originated from the Kali attacker machine, the investigation was then focused on successful Windows authentication events.
 The search was changed to Event ID 4624, which represents a successful logon:
@@ -76,25 +71,36 @@ The successful authentication correlated with the previous failed authentication
 
 
 **Key indicators observed:**
-- Event ID(s) relevant to this attack:
-  1.EventCode=4625 (Failed logon events)
-  2.Eventcode=4624 (Successful logon event)
-- Fields that matter (account name, source IP, process name, etc.)
-  account name - kali
-  source IP - 192.168.10.100
-  process name -
-  protocol - RDP
-  tool - hydra
+ - Event ID(s) relevant to this attack:
+   1.EventCode=4625 (Failed logon events)
+   2.Eventcode=4624 (Successful logon event)
+ - Fields that matter (account name, source IP, process name, etc.)
+   account name - kali
+   source IP - 192.168.10.100
+   process name -
+   protocol - RDP
+   tool - hydra
   
 
-*(Screenshot of Splunk results here — see /screenshots)*
+## Screenshots
+
+* [Attack – Hydra RDP Brute-Force](screenshots/Attack-rdp-1.png)
+* [Detection – Failed Logons](screenshots/Detection-2.png)
+* [Detection – Splunk Investigation](screenshots/Detection-3.png)
+* [Detection – Splunk Investigation](screenshots/Detection-4.png)
+* [Detection – Splunk Investigation](screenshots/Detection-5.png)
+* [Detection – Successful Logon](screenshots/Detection-6.png)
+
 
 ## MITRE ATT&CK Mapping
 
-| Tactic | Technique | ID |
-|---|---|
-|  Credential Access | Brute Force | T1110.001 |
-|  Lateral Movement | Remote Services: RDP | T1021.001 |
+## MITRE ATT&CK Mapping
+
+| Tactic            | Technique                      | ID        | Description                                                                |
+| ----------------- | ------------------------------ | --------- | -------------------------------------------------------------------------- |
+| Credential Access | Brute Force: Password Guessing | T1110.001 | Hydra was used to repeatedly attempt passwords against the target account. |
+| Lateral Movement  | Remote Services: RDP           | T1021.001 | RDP was the remote service targeted by the attack.                         |
+
 
 ## Lessons Learned 
 
