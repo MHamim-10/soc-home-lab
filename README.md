@@ -13,7 +13,7 @@ A self-built home lab simulating a small enterprise environment with Active Dire
 | Win22 | Domain Controller (`Myproject.local`) | Windows Server 2022 | 192.168.10.12 |
 | Kali | Attacker machine | Kali Linux | 192.168.10.100 |
 
-![Network Architecture](diagrams/network-architecture.png)
+![Network Architecture](diagrams/Diagram.jpg)
 
 **Domain:** `Myproject.local`
 **Organizational Units:** `IT` , `HR` 
