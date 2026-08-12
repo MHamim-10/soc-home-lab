@@ -16,7 +16,7 @@ A self-built home lab simulating a small enterprise environment with Active Dire
 ![Network Architecture](diagrams/network-architecture.png)
 
 **Domain:** `Myproject.local`
-**Organizational Units:** `IT` (user: `jsmith`), `HR` (user: `acooper`)
+**Organizational Units:** `IT` , `HR` 
 
 ## Tools Used
 
@@ -30,9 +30,6 @@ A self-built home lab simulating a small enterprise environment with Active Dire
 | # | Attack | Technique | Link |
 |---|---|---|---|
 | 01 | RDP Brute Force | Credential Access (T1110) | [attacks/01-rdp-bruteforce](attacks/01-rdp-bruteforce/README.md) |
-| 02 | *(coming soon)* | | |
-| 03 | *(coming soon)* | | |
-| 04 | *(coming soon)* | | |
 
 ## Setup Summary
 
@@ -44,7 +41,6 @@ A self-built home lab simulating a small enterprise environment with Active Dire
 
 ## Infrastructure Challenges & Troubleshooting
 
-- **DNS/network loss after promoting Win22 to a Domain Controller** — DNS on the DC's own NIC needed to point to itself, not an external resolver — a classic AD DS gotcha after promotion.
 - **Missing Splunk logs after the DC network issue** — traced through forwarder service status, firewall/network profile changes, and `inputs.conf` monitoring stanzas.
 - **Events not appearing in "Last 24 hours" despite existing in "All time"** — root-caused to clock drift: Ubuntu's `systemd-timesyncd` was inactive, causing UTC drift relative to the domain. Fixed with `timedatectl set-ntp true` and `w32tm /resync /force` across the Windows machines.
 
