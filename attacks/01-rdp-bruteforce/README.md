@@ -1,4 +1,4 @@
-# Attack N: RDP brute-force attack
+# Attack 1: RDP brute-force attack
 
 ## Objective
 
@@ -77,7 +77,7 @@ The successful authentication correlated with the previous failed authentication
  - Fields that matter (account name, source IP, process name, etc.)
    account name - kali
    source IP - 192.168.10.100
-   process name -
+   process name - 2567
    protocol - RDP
    tool - hydra
   
@@ -91,8 +91,6 @@ The successful authentication correlated with the previous failed authentication
 * [Detection – Splunk Investigation](screenshots/Detection-5.png)
 * [Detection – Successful Logon](screenshots/Detection-6.png)
 
-
-## MITRE ATT&CK Mapping
 
 ## MITRE ATT&CK Mapping
 
